@@ -14,7 +14,7 @@ O   6) equals()
     7) HashCode()
     8) Equal null
     9) Equal object
-    10) 5CHF * 2 = 10 CHF (multi currency)
+O   10) 5CHF * 2 = 10 CHF (multi currency)
     11) Dollar/Franc duplication
     12) Common equals
     13) Common times
@@ -26,40 +26,55 @@ progress
     - Promised ourselves we wouldn’t go home until the duplication was gone
 
 To do:
+    1) 5+10chf = $10
+O   2) 5*2 = 10
+O   3) make "amount" private
+O   4) side effect of dollar?
+    5) money rounding?
+O   6) equals()
+    7) HashCode()
+    8) Equal null
+    9) Equal object
+O   10) 5CHF * 2 = 10 CHF (multi currency)
+    11) Dollar/Franc duplication
+O   12) Common equals
+    13) Common times
 
+    - Stepwise moved common code from one class(Dollar) to a superclass(Money)
+    - Made a second class (Franc) also a subclass
+    - Reconciled two implementations (equals()) before eliminating the redundant
+one
 */
 
-class Dollar {
- private:
+class Money {
+ protected:
   double amount;
 
  public:
-  Dollar(double amount) : amount(amount) { ; }
+  Money(double amount) : amount(amount) { ; }
+
+  bool equals(const std::shared_ptr<Money> money) {
+    return amount == money->amount;
+  }
+};
+
+class Dollar : public Money {
+ private:
+ public:
+  Dollar(double amount) : Money(amount) { ; }
 
   std::shared_ptr<Dollar> times(const int multiplier) {
     return std::make_shared<Dollar>(amount * multiplier);
   }
-
-  template <typename T>
-  bool equals(const std::shared_ptr<T> comp) {
-    return amount == comp->amount;
-  }
 };
 
-class Franc {
+class Franc : public Money {
  private:
-  double amount;
-
  public:
-  Franc(double amount) : amount(amount) { ; }
+  Franc(double amount) : Money(amount) { ; }
 
   std::shared_ptr<Franc> times(const int multiplier) {
     return std::make_shared<Franc>(amount * multiplier);
-  }
-
-  template <typename T>
-  bool equals(const std::shared_ptr<T> comp) {
-    return amount == comp->amount;
   }
 };
 
@@ -68,28 +83,30 @@ TEST(MoneyExample, Multiplication) {
 
   // !! Risk: test for eqality and multiplication both depends on function
   // equals
-  EXPECT_TRUE(five->times(2)->equals<Dollar>(std::make_shared<Dollar>(10)))
+  EXPECT_TRUE(five->times(2)->equals(std::make_shared<Dollar>(10)))
       << "The amount is not correct";
-  EXPECT_TRUE(five->times(3)->equals<Dollar>(std::make_shared<Dollar>(15)))
+  EXPECT_TRUE(five->times(3)->equals(std::make_shared<Dollar>(15)))
       << "The amount is not correct";
 }
 
 TEST(MoneyExample, Equality) {
-  std::shared_ptr<Dollar> five = std::make_shared<Dollar>(5);
-
   // triangulation
-  EXPECT_TRUE(five->equals<Dollar>(std::make_shared<Dollar>(5)))
+  EXPECT_TRUE(std::make_shared<Dollar>(5)->equals(std::make_shared<Dollar>(5)))
       << " Same amount";
-  EXPECT_FALSE(five->equals<Dollar>(std::make_shared<Dollar>(6)))
+  EXPECT_FALSE(std::make_shared<Dollar>(5)->equals(std::make_shared<Dollar>(6)))
+      << " Not a same";
+  EXPECT_TRUE(std::make_shared<Franc>(5)->equals(std::make_shared<Franc>(5)))
+      << " Same amount";
+  EXPECT_FALSE(std::make_shared<Franc>(5)->equals(std::make_shared<Franc>(6)))
       << " Not a same";
 }
 
 TEST(MoneyExample, Franc_Multiplication) {
   std::shared_ptr<Franc> five = std::make_shared<Franc>(5);
 
-  EXPECT_TRUE(five->times(2)->equals<Franc>(std::make_shared<Franc>(10)))
+  EXPECT_TRUE(five->times(2)->equals(std::make_shared<Franc>(10)))
       << "The amount is not correct";
-  EXPECT_TRUE(five->times(3)->equals<Franc>(std::make_shared<Franc>(15)))
+  EXPECT_TRUE(five->times(3)->equals(std::make_shared<Franc>(15)))
       << "The amount is not correct";
 }
 
