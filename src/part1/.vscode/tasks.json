@@ -39,6 +39,46 @@
             }
         },
         {
+        "label": "gtest",
+        "type": "shell",
+        "command": "clang++",
+        "args": [
+            "-std=c++17",
+            "-stdlib=libc++",
+            "money_example.cpp",
+            "-lgtest",
+            "-lgtest_main",
+            "-pthread",
+            "-o",
+            "money_example.out",
+            "--debug"
+        ],
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "panel": "shared"
+        },
+        "problemMatcher": {
+            "owner": "cpp",
+            "fileLocation": [
+                "relative",
+                "${workspaceRoot}"
+            ],
+            "pattern": {
+                "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                "file": 1,
+                "line": 2,
+                "column": 3,
+                "severity": 4,
+                "message": 5
+            }
+        },
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        }
+    },
+        {
             "type": "shell",
             "label": "clang++ build active file",
             "command": "/usr/bin/clang++",
