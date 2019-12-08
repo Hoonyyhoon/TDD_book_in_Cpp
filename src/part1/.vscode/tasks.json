@@ -8,9 +8,9 @@
             "args": [
                 "-std=c++17",
                 "-stdlib=libc++",
-                "money_example.cpp",
+                "test.cpp",
                 "-o",
-                "money_example.out",
+                "test.out",
                 "--debug"
             ],
             "presentation": {
@@ -45,12 +45,12 @@
         "args": [
             "-std=c++17",
             "-stdlib=libc++",
-            "money_example.cpp",
+            "test.cpp",
             "-lgtest",
             "-lgtest_main",
             "-pthread",
             "-o",
-            "money_example.out",
+            "test.out",
             "--debug"
         ],
         "presentation": {
