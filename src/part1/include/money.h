@@ -4,34 +4,6 @@
 #include <string>
 #include <typeinfo>  // typeid
 
-/*
-Done:
-    Francs != Dollars
-    $5*2 = $10
-    Make "amount" private
-    Dollar side effects?
-    Equals()
-    5 CHF * 2 = 10 CHF
-    Common equals
-Todo:
-    5 + 10 CHF = 10 if CHF:USD is 2:1
-    Money rounding?
-    HashCode()
-    Equal null
-    Equal object
-    Dollar/Franc duplication
-    Common times
-    Currency?
-
-  - Took a step towards eliminating duplication by reconciling the signatures of
-two variants of the same method (times())
-  - Moved at least a declaration of the method to the common superclass (Not onto a superclass but factory class)
-  - Decoupled test code from the existence of concrete subclasses by introducing
-factory methods (extra MoneyFactory class for c++)
-  - Noticed that when the subclasses disappear some tests will be redundant, but
-took no action
-*/
-
 class Money {
  protected:
   double amount_;
@@ -99,16 +71,15 @@ class Franc : public Money {
 };
 
 class MoneyFactory {
-  public:
-    enum MoneyType {
-      USD,
-      CHF
-    };
-    static std::unique_ptr<Money> money(MoneyType mtype, int amount_) {
-      switch (mtype) {
-        case USD: return std::make_unique<Dollar>(amount_);
-        case CHF: return std::make_unique<Franc>(amount_);
-      }
-      throw "invalid currency.";
+ public:
+  enum MoneyType { USD, CHF };
+  static std::unique_ptr<Money> money(MoneyType mtype, int amount_) {
+    switch (mtype) {
+    case USD:
+      return std::make_unique<Dollar>(amount_);
+    case CHF:
+      return std::make_unique<Franc>(amount_);
     }
+    throw "invalid currency.";
+  }
 };
