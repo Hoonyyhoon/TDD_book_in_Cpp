@@ -27,17 +27,3 @@ class Money {
     return std::make_unique<Money>( multiplier * amount_, currency_ );
   }
 };
-
-class Dollar : public Money {
- private:
-
-  public:
-  Dollar(double amount, std::string currency) : Money(amount, currency) { ; }
-};
-
-class Franc : public Money {
- private:
-
- public:
-  Franc(double amount, std::string currency) : Money(amount, currency) { ; }
-};
