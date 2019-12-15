@@ -1,4 +1,4 @@
-## Chapter 10. Interesting Times
+## Chapter 11. The Root of All Evil
 - [ ] $5 + 10 CHF = 10 if CHF:USD is 2:1
 - [X] $5*2 = $10
 - [X] Make "amount" private
@@ -9,18 +9,16 @@
 - [ ] Equal null
 - [ ] Equal object
 - [X] 5 CHF * 2 = 10 CHF
-- [ ] Dollar/Franc duplication
+- [X] Dollar/Franc duplication
 - [X] Common equals
 - [X] Common times
 - [X] Compare Francs to Dollars
 - [X] Currency?
-- [ ] Delete testFrancMultiplication?
+- [X] Delete testFrancMultiplication?
 
-- Reconciled two methods (times()) by first inlining the methods they called and
-then replacing constants with variables
-- Wrote a toString() without a test just to help us debug
-- Tried a change (returning Money instead of Franc) and let the tests tell us
-whether it worked
+- Finished gutting subclasses and deleted them
+- Eliminated tests that made sense with the old code structure but were redundant with
+the new code structure
 
 ## Run code
 The structure of the CMake highly referenced from a great project, **Modern CMake**[[link](https://gitlab.com/CLIUtils/modern-cmake)]
