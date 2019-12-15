@@ -2,41 +2,39 @@
 #include "money.h"
 
 TEST(MoneyExample, Multiplication) {
-  MoneyFactory mf;
-  std::unique_ptr<Money> five = mf.money("USD", 5);
-
   // !! Risk: test for eqality and multiplication both depends on function
   // equals
-  EXPECT_TRUE(five->times(2)->equals(mf.money("USD", 10)))
+  EXPECT_TRUE(std::make_unique<Money>(5, "USD")->times(2)->equals(std::make_unique<Money>(10, "USD")))
       << "The amount is not correct";
-  EXPECT_TRUE(five->times(3)->equals(mf.money("USD", 15)))
+  EXPECT_TRUE(std::make_unique<Money>(5, "USD")->times(3)->equals(std::make_unique<Money>(15, "USD")))
       << "The amount is not correct";
 }
 
 TEST(MoneyExample, Equality) {
-MoneyFactory mf;
-  std::unique_ptr<Money> five = mf.money("USD", 5);
-
   // triangulation
-  EXPECT_TRUE( mf.money("USD", 5)->equals(mf.money("USD", 5)))
+  EXPECT_TRUE(std::make_unique<Money>(5, "USD")->equals(
+      std::make_unique<Money>(5, "USD")))
       << "Equals failed";
-  EXPECT_FALSE(mf.money("USD", 5)->equals(mf.money("USD", 6)))
+  EXPECT_FALSE(std::make_unique<Money>(5, "USD")->equals(
+      std::make_unique<Money>(6, "USD")))
       << "Equals failed";
-  EXPECT_TRUE(mf.money("CHF", 5)->equals(mf.money("CHF", 5)))
+  EXPECT_TRUE(std::make_unique<Money>(5, "CHF")->equals(
+      std::make_unique<Money>(5, "CHF")))
       << "Equals failed";
-  EXPECT_FALSE(mf.money("CHF", 5)->equals(mf.money("CHF", 6)))
+  EXPECT_FALSE(std::make_unique<Money>(5, "CHF")->equals(
+      std::make_unique<Money>(6, "CHF")))
       << "Equals failed";
-  EXPECT_FALSE(mf.money("CHF", 5)->equals(mf.money("USD", 5)))
+  EXPECT_FALSE(std::make_unique<Money>(5, "CHF")->equals(
+      std::make_unique<Money>(5, "USD")))
       << "Franc, Dollars shouldn't be equal";
 }
 
 TEST(MoneyExample, Franc_Multiplication) {
-  MoneyFactory mf;
-  std::unique_ptr<Money> five = mf.money("CHF", 5);
-
-  EXPECT_TRUE(five->times(2)->equals(mf.money("CHF", 10)))
+  EXPECT_TRUE(std::make_unique<Money>(5, "CHF")->times(2)->equals(
+      std::make_unique<Money>(10, "CHF")))
       << "The amount is not correct";
-  EXPECT_TRUE(five->times(3)->equals(mf.money("CHF", 15)))
+  EXPECT_TRUE(std::make_unique<Money>(5, "CHF")->times(3)->equals(
+      std::make_unique<Money>(15, "CHF")))
       << "The amount is not correct";
 }
 
